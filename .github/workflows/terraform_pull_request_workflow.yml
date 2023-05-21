@@ -36,6 +36,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-central-1
           AWS_ROLE_ARN: ${{ env.SANDBOX_IAM_ROLE }}
+          TF_LOG: DEBUG # TODO remove
         run: terraform init -input=false
 
       - name: Terraform validation
