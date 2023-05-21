@@ -3,9 +3,10 @@ run-name: Validate terraform files & generate plan
 defaults:
   run:
     working-directory: ./infra
-on:
-  pull_request:
-    types: [opened, reopened, edited]
+on: [pull_request, workflow_dispatch]
+#on:
+#  pull_request:
+#    types: [opened, reopened, edited]
 env:
   SANDBOX_IAM_ROLE: arn:aws:iam::242906888793:role/AWS_Sandbox
 #  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
