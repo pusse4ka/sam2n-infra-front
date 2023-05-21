@@ -1,6 +1,8 @@
 name: Validate terraform files & generate plan
 run-name: Validate terraform files & generate plan
-#on: [workflow_dispatch]
+defaults:
+  run:
+    working-directory: ./infra
 on:
   pull_request:
     types: [opened, reopened, edited]
@@ -25,7 +27,6 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
-        run: cd ./infra
       - name: Terraform format
         id: fmt
         run: terraform fmt -check
