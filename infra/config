@@ -1,0 +1,4 @@
+[profile AWS_Sandbox]
+role_arn=arn:aws:iam::242906888793:role/AWS_Sandbox
+source_profile=default
+region=eu_central-1

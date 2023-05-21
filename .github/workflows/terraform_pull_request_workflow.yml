@@ -30,12 +30,16 @@ jobs:
       - name: Verify Terraform version
         run: terraform --version
 
+      - name: Configure AWS Sandbox Role
+        run: mv config ~/.aws/
+
       - name: Terraform init
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-central-1
-          AWS_ROLE_ARN: ${{ env.SANDBOX_IAM_ROLE }}
+#          AWS_ROLE_ARN: ${{ env.SANDBOX_IAM_ROLE }}
+          AWS_PROFILE: AWS_Sandbox
           TF_LOG: DEBUG # TODO remove
         run: terraform init -input=false
 
@@ -47,7 +51,8 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-central-1
-          AWS_ROLE_ARN: ${{ env.SANDBOX_IAM_ROLE }}
+#          AWS_ROLE_ARN: ${{ env.SANDBOX_IAM_ROLE }}
+          AWS_PROFILE: AWS_Sandbox
         run: terraform plan
 
 #      - name: Terraform apply
