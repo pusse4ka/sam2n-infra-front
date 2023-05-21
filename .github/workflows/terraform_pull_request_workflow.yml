@@ -31,7 +31,9 @@ jobs:
         run: terraform --version
 
       - name: Configure AWS Sandbox Role
-        run: mv config ~/.aws/
+        run: |
+          sudo mkdir ~/.aws/
+          sudo mv config ~/.aws/
 
       - name: Terraform init
         env:
