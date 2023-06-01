@@ -14,7 +14,11 @@ jobs:
       - name: Install Terraform
         env:
           TERRAFORM_VERSION: "0.12.15"
-        run: ./.github/bin/install-terraform.sh
+        run: |
+          tf_version=$TERRAFORM_VERSION
+          wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
+          unzip terraform_"$tf_version"_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
 
       - name: Verify Terraform version
         run: terraform --version
@@ -27,7 +31,15 @@ jobs:
           aws-region: eu-central-1
 
       - name: Create Sandbox session
-        run: ./.github/bin/sandbox-session.sh
+#        run: ./.github/bin/sandbox-session.sh
+        run: |
+          credentials=$(aws sts assume-role --role-arn "$SANDBOX_IAM_ROLE" --role-session-name sandbox-session)
+          SANDBOX_AWS_ACCESS_KEY_ID=$(echo "$credentials" | jq .AccessKeyId -r)
+          SANDBOX_AWS_SESSION_TOKEN=$(echo "$credentials" | jq .SessionToken -r)
+          SANDBOX_AWS_SECRET_ACCESS_KEY=$(echo "$credentials" | jq .SecretAccessKey -r)
+          export SANDBOX_AWS_ACCESS_KEY_ID
+          export SANDBOX_AWS_SESSION_TOKEN
+          export SANDBOX_AWS_SECRET_ACCESS_KEY
 
       - name: Terraform init
         env:
