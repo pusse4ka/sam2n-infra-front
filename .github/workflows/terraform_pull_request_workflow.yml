@@ -38,7 +38,10 @@ jobs:
           aws-region: eu-central-1
 
       - name: Assume Sandbox role
-        run: aws sts assume-role ${{ env.SANDBOX_IAM_ROLE }} && echo aws sts get-caller-identity
+        run: |
+          aws sts assume-role --role-arn ${{ env.SANDBOX_IAM_ROLE }} \
+          --role-session-name sandbox-session \
+          && echo aws sts get-caller-identity
 
       - name: Terraform init
         env:
