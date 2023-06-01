@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 0.12.15"
+  required_version = "~>1.4.0"
   backend "s3" {
     bucket         = "sam2n-tf-state-bucket"
     key            = "terraform-front.tfstate"
@@ -11,5 +11,4 @@ terraform {
 
 provider "aws" {
   region = "eu-central-1"
-  #  token = var.aws_session_token
 }
