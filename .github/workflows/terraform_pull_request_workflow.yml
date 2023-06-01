@@ -34,6 +34,7 @@ jobs:
 #        run: ./.github/bin/sandbox-session.sh
         run: |
           credentials=$(aws sts assume-role --role-arn "$SANDBOX_IAM_ROLE" --role-session-name sandbox-session)
+          echo $("$credentials")
           SANDBOX_AWS_ACCESS_KEY_ID=$(echo "$credentials" | jq .AccessKeyId -r)
           SANDBOX_AWS_SESSION_TOKEN=$(echo "$credentials" | jq .SessionToken -r)
           SANDBOX_AWS_SECRET_ACCESS_KEY=$(echo "$credentials" | jq .SecretAccessKey -r)
