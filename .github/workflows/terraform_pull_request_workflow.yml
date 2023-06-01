@@ -30,17 +30,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
 
-      - name: Install command-line JSON processor
-        run: sudo apt search jq
+#      - name: Install command-line JSON processor
+#        run: sudo apt search jq
 
       - name: Create Sandbox session
 #        run: ./.github/bin/sandbox-session.sh
         run: |
           credentials=$(aws sts assume-role --role-arn "$SANDBOX_IAM_ROLE" --role-session-name sandbox-session)
           echo $("$credentials")
-          SANDBOX_AWS_ACCESS_KEY_ID=$(echo "$credentials" | jq .AccessKeyId -r)
-          SANDBOX_AWS_SESSION_TOKEN=$(echo "$credentials" | jq .SessionToken -r)
-          SANDBOX_AWS_SECRET_ACCESS_KEY=$(echo "$credentials" | jq .SecretAccessKey -r)
+          SANDBOX_AWS_ACCESS_KEY_ID=$(echo "$credentials" | jq .Credentials.AccessKeyId -r)
+          SANDBOX_AWS_SESSION_TOKEN=$(echo "$credentials" | jq .Credentials.SessionToken -r)
+          SANDBOX_AWS_SECRET_ACCESS_KEY=$(echo "$credentials" | jq .Credentials.SecretAccessKey -r)
           export SANDBOX_AWS_ACCESS_KEY_ID
           export SANDBOX_AWS_SESSION_TOKEN
           export SANDBOX_AWS_SECRET_ACCESS_KEY
