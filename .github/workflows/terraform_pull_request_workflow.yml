@@ -43,6 +43,9 @@ jobs:
           export SANDBOX_AWS_ACCESS_KEY_ID
           export SANDBOX_AWS_SESSION_TOKEN
           export SANDBOX_AWS_SECRET_ACCESS_KEY
+          echo "::set-env name=SANDBOX_AWS_ACCESS_KEY_ID::$(echo "$credentials" | jq .Credentials.AccessKeyId -r)"
+          echo "::set-env name=SANDBOX_AWS_SESSION_TOKEN::$(echo "$credentials" | jq .Credentials.SessionToken -r)"
+          echo "::set-env name=SANDBOX_AWS_SECRET_ACCESS_KEY::$(echo "$credentials" | jq .Credentials.SecretAccessKey -r)"
 
       - name: Verify variables set
         run: echo "$SANDBOX_AWS_ACCESS_KEY_ID"
