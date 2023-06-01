@@ -14,11 +14,7 @@ jobs:
       - name: Install Terraform
         env:
           TERRAFORM_VERSION: "0.12.15"
-        run: |
-          tf_version=$TERRAFORM_VERSION
-          wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
-          unzip terraform_"$tf_version"_linux_amd64.zip
-          sudo mv terraform /usr/local/bin/
+        run: ./.github/bin/install-terraform.sh
 
       - name: Verify Terraform version
         run: terraform --version
@@ -31,7 +27,7 @@ jobs:
           aws-region: eu-central-1
 
       - name: Create Sandbox session
-        run: bash ./bin/sandbox-session.sh
+        run: ./.github/bin/sandbox-session.sh
 
       - name: Terraform init
         env:
