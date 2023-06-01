@@ -37,15 +37,12 @@ jobs:
 #        run: ./.github/bin/sandbox-session.sh
         run: |
           credentials=$(aws sts assume-role --role-arn "$SANDBOX_IAM_ROLE" --role-session-name sandbox-session)
-          SANDBOX_AWS_ACCESS_KEY_ID=$(echo "$credentials" | jq .Credentials.AccessKeyId -r)
-          SANDBOX_AWS_SESSION_TOKEN=$(echo "$credentials" | jq .Credentials.SessionToken -r)
-          SANDBOX_AWS_SECRET_ACCESS_KEY=$(echo "$credentials" | jq .Credentials.SecretAccessKey -r)
-          export SANDBOX_AWS_ACCESS_KEY_ID
-          export SANDBOX_AWS_SESSION_TOKEN
-          export SANDBOX_AWS_SECRET_ACCESS_KEY
-          echo "::set-env name=SANDBOX_AWS_ACCESS_KEY_ID::$(echo "$credentials" | jq .Credentials.AccessKeyId -r)"
-          echo "::set-env name=SANDBOX_AWS_SESSION_TOKEN::$(echo "$credentials" | jq .Credentials.SessionToken -r)"
-          echo "::set-env name=SANDBOX_AWS_SECRET_ACCESS_KEY::$(echo "$credentials" | jq .Credentials.SecretAccessKey -r)"
+          echo "SANDBOX_AWS_ACCESS_KEY_ID=$(echo "$credentials" | jq .Credentials.AccessKeyId -r)" >> "$GITHUB_ENV"
+          echo "SANDBOX_AWS_SESSION_TOKEN=$(echo "$credentials" | jq .Credentials.SessionToken -r)" >> "$GITHUB_ENV"
+          echo "SANDBOX_AWS_SECRET_ACCESS_KEY=$(echo "$credentials" | jq .Credentials.SecretAccessKey -r)" >> "$GITHUB_ENV"
+#          echo "::set-env name=SANDBOX_AWS_ACCESS_KEY_ID::$(echo "$credentials" | jq .Credentials.AccessKeyId -r)"
+#          echo "::set-env name=SANDBOX_AWS_SESSION_TOKEN::$(echo "$credentials" | jq .Credentials.SessionToken -r)"
+#          echo "::set-env name=SANDBOX_AWS_SECRET_ACCESS_KEY::$(echo "$credentials" | jq .Credentials.SecretAccessKey -r)"
 
       - name: Verify variables set
         run: echo "$SANDBOX_AWS_ACCESS_KEY_ID"
