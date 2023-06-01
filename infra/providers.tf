@@ -11,7 +11,4 @@ terraform {
 
 provider "aws" {
   region = "eu-central-1"
-  assume_role {
-    role_arn = "arn:aws:iam::242906888793:role/AWS_Sandbox"
-  }
 }
