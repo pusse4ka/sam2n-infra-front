@@ -11,4 +11,5 @@ terraform {
 
 provider "aws" {
   region = "eu-central-1"
+  #  token = var.aws_session_token
 }
