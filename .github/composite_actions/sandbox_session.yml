@@ -1,0 +1,25 @@
+name: 'Create Sandbox AWS Session'
+description: 'Makes aws:sts API call and puts credentials in environment variables'
+inputs:
+  sandbox-role-arn:
+    description: 'IAM role to assign'
+    required: false
+    default: 'arn:aws:iam::242906888793:role/AWS_Sandbox'
+outputs:
+  SANDBOX_AWS_ACCESS_KEY_ID:
+    description: "Sandbox AWS Access Key ID"
+    value: ${{ steps.configure-aws-sandbox-session.outputs.SANDBOX_AWS_ACCESS_KEY_ID }}
+  SANDBOX_AWS_SESSION_TOKEN:
+    description: "Sandbox AWS Session Token"
+    value: ${{ steps.configure-aws-sandbox-session.outputs.SANDBOX_AWS_SESSION_TOKEN }}
+  SANDBOX_AWS_SECRET_ACCESS_KEY:
+    description: "Sandbox AWS Secret Access Key"
+    value: ${{ steps.configure-aws-sandbox-session.outputs.SANDBOX_AWS_SECRET_ACCESS_KEY }}
+
+runs:
+  using: "composite"
+  steps:
+    - run: export SANDBOX_IAM_ROLE=${{ inputs.sandbox-role-arn }}
+    - id: configure-aws-sandbox-session
+      run: $GITHUB_ACTION_PATH/bin/aws_session.sh
+      shell: bash
