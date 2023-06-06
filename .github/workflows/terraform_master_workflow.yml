@@ -1,0 +1,40 @@
+name: terraform apply
+run-name: terraform apply
+defaults:
+  run:
+    working-directory: ./infra
+on: [push]
+env:
+  SANDBOX_IAM_ROLE: arn:aws:iam::242906888793:role/AWS_Sandbox
+jobs:
+  terraform-plan:
+    uses: ./.github/workflows/terraform_plan.yml
+    with:
+      secrets: inherit
+
+  terraform-apply:
+    needs: terraform-plan
+    runs-on: ubuntu-latest
+    steps:
+      # TODO refactor with composite actions
+      - name: Install Terraform
+        env:
+          TERRAFORM_VERSION: "1.4.0"
+        run: |
+          tf_version=$TERRAFORM_VERSION
+          wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
+          unzip terraform_"$tf_version"_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+
+      - name: Download tf plan
+        uses: actions/download-artifact@v3
+        with:
+          name: tfplan
+
+      - name: Terraform apply
+        env:
+          AWS_DEFAULT_REGION: eu-central-1
+          AWS_ACCESS_KEY_ID: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_SESSION_TOKEN }}
+        run: terraform apply tfplan
