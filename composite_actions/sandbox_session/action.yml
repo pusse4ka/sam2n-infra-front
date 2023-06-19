@@ -19,13 +19,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    #TODO: remove
-    - run: echo ${{ inputs.sandbox-role-arn }}
-      shell: bash
-    - run: export SANDBOX_IAM_ROLE=${{ inputs.sandbox-role-arn }}
-      shell: bash
-    #TODO: remove
-    - run: echo $SANDBOX_IAM_ROLE
+    - run: echo "SANDBOX_IAM_ROLE=${{ inputs.sandbox-role-arn }}" >> $GITHUB_ENV
       shell: bash
     - run: chmod +x ${{ github.action_path }}/aws_session.sh
       shell: bash
