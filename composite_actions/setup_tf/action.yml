@@ -8,9 +8,5 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: export TF_VERSION=${{ inputs.terraform-version }}
-      shell: bash
-    - run: git update-index --chmod=777 $GITHUB_ACTION_PATH/install_tf.sh
-      shell: bash
-    - run: $GITHUB_ACTION_PATH/install_tf.sh --version=$TF_VERSION
+    - run: ${{github.action_path}}/install_tf.sh --version=${{ inputs.terraform-version }}
       shell: bash
