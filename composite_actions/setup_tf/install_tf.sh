@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "$version"
+
 if [ -z "$version" ]; then
     echo -e "\nPlease pass --version <version> to run this command!\n"
     exit 1

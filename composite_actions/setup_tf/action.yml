@@ -10,5 +10,5 @@ runs:
   steps:
     - run: chmod +x ${{ github.action_path }}/install_tf.sh
       shell: bash
-    - run: ${{ github.action_path }}/install_tf.sh --version ${{ inputs.terraform-version }}
+    - run: ${{ github.action_path }}/install_tf.sh --version "${{ inputs.terraform-version }}"
       shell: bash
