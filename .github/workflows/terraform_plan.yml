@@ -1,5 +1,7 @@
 name: terraform validate & terraform plan & aws sandbox session
 run-name: terraform validate & terraform plan & aws sandbox session
+
+# TODO: refactor and fix and use
 on:
   workflow_call:
     inputs:

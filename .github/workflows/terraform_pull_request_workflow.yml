@@ -24,6 +24,12 @@ jobs:
         id: create-sandbox-session
         uses: ./composite_actions/sandbox_session
 
+      - name: Test creds
+        run: |
+          echo ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_ACCESS_KEY_ID }}
+          echo ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SECRET_ACCESS_KEY }}
+          echo ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SESSION_TOKEN }}
+
         #FIXME
       - name: Terraform init
         working-directory: ./infra
