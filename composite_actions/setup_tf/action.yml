@@ -10,5 +10,7 @@ runs:
   steps:
     - run: export TF_VERSION=${{ inputs.terraform-version }}
       shell: bash
-    - run: sudo $GITHUB_ACTION_PATH/install_tf.sh --version=$TF_VERSION
+    - run: git update-index --chmod=+x $GITHUB_ACTION_PATH/install_tf.sh
+      shell: bash
+    - run: $GITHUB_ACTION_PATH/install_tf.sh --version=$TF_VERSION
       shell: bash
