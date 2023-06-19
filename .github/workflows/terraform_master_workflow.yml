@@ -1,9 +1,9 @@
 name: terraform apply
 run-name: terraform apply
-defaults:
-  run:
-    working-directory: ./infra
-on: [push]
+on:
+  push:
+    branches:
+      - 'main'
 env:
   SANDBOX_IAM_ROLE: arn:aws:iam::242906888793:role/AWS_Sandbox
 jobs:

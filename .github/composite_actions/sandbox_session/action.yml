@@ -20,6 +20,7 @@ runs:
   using: "composite"
   steps:
     - run: export SANDBOX_IAM_ROLE=${{ inputs.sandbox-role-arn }}
+      shell: bash
     - id: configure-aws-sandbox-session
-      run: $GITHUB_ACTION_PATH/bin/aws_session.sh
+      run: $GITHUB_ACTION_PATH/aws_session.sh
       shell: bash
