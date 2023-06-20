@@ -72,10 +72,8 @@ jobs:
           AWS_SESSION_TOKEN: ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SESSION_TOKEN }}
         run: terraform plan -out tfplan
 
-#       FIXME
-#      - name: Save tf plan
-#        working-directory: ./infra
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: tfplan
-#          path: tfplan
+      - name: Save tf plan
+        uses: actions/upload-artifact@v2
+        with:
+          name: tfplan
+          path: ./infra/tfplan
