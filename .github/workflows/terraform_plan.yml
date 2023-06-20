@@ -35,8 +35,8 @@ jobs:
 
       - name: Setup Terraform
         uses: ./composite_actions/setup_tf
-#        with:
-#          terraform-version: '1.4.0'
+        with:
+          terraform-version: '1.4.0'
 
       - name: Verify Terraform version
         run: terraform --version
@@ -51,8 +51,8 @@ jobs:
       - name: Create Sandbox session
         id: create-sandbox-session
         uses: ./composite_actions/sandbox_session
-#        with:
-#          sandbox-role-arn: ${{ inputs.aws-sandbox-role-arn }}
+        with:
+          sandbox-role-arn: ${{ inputs.aws-sandbox-role-arn }}
 
       - name: Terraform init
         working-directory: ./infra
@@ -72,9 +72,9 @@ jobs:
           AWS_SESSION_TOKEN: ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SESSION_TOKEN }}
         run: terraform plan -out tfplan
 
-      - name: Save tf plan
-        working-directory: ./infra
-        uses: actions/upload-artifact@v3
-        with:
-          name: tfplan
-          path: tfplan
+#      - name: Save tf plan
+#        working-directory: ./infra
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: tfplan
+#          path: tfplan
