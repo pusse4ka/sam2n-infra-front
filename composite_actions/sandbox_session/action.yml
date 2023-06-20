@@ -4,7 +4,7 @@ inputs:
   sandbox-role-arn:
     description: 'IAM role to assign'
     required: false
-    default: 'arn:aws:iam::242906888793:role/AWS_Sandbox'
+    default: arn:aws:iam::242906888793:role/AWS_Sandbox
 outputs:
   SANDBOX_AWS_ACCESS_KEY_ID:
     description: "Sandbox AWS Access Key ID"
@@ -19,7 +19,10 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: export SANDBOX_IAM_ROLE=${{ inputs.sandbox-role-arn }}
+    - run: echo "SANDBOX_IAM_ROLE=${{ inputs.sandbox-role-arn }}" >> $GITHUB_ENV
+      shell: bash
+    - run: chmod +x ${{ github.action_path }}/aws_session.sh
+      shell: bash
     - id: configure-aws-sandbox-session
-      run: $GITHUB_ACTION_PATH/bin/aws_session.sh
+      run: ${{ github.action_path }}/aws_session.sh
       shell: bash

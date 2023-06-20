@@ -1,0 +1,14 @@
+name: 'Install Terraform'
+description: 'Installs terraform'
+inputs:
+  terraform-version:
+    description: 'Terraform version'
+    required: false
+    default: '1.4.0'
+runs:
+  using: "composite"
+  steps:
+    - run: chmod +x ${{ github.action_path }}/install_tf.sh
+      shell: bash
+    - run: ${{ github.action_path }}/install_tf.sh -v ${{ inputs.terraform-version }}
+      shell: bash

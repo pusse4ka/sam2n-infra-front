@@ -1,7 +1,0 @@
-name: 'Install Terraform'
-description: 'Installs terraform'
-runs:
-  using: "composite"
-  steps:
-    - run: $GITHUB_ACTION_PATH/bin/install_tf.sh --version="1.4.0"
-      shell: bash
