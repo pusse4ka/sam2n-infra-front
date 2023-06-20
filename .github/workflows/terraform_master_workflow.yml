@@ -1,5 +1,5 @@
-name: terraform apply
-run-name: terraform apply
+name: Terraform apply
+run-name: Terraform apply
 on:
   push:
     branches:
@@ -16,22 +16,20 @@ jobs:
     needs: terraform-plan
     runs-on: ubuntu-latest
     steps:
-      # TODO refactor with composite actions
-      - name: Install Terraform
-        env:
-          TERRAFORM_VERSION: "1.4.0"
-        run: |
-          tf_version=$TERRAFORM_VERSION
-          wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
-          unzip terraform_"$tf_version"_linux_amd64.zip
-          sudo mv terraform /usr/local/bin/
+      - name: Setup Terraform
+        uses: ./composite_actions/setup_tf
+
+      - name: Verify Terraform version
+        run: terraform --version
 
       - name: Download tf plan
+        working-directory: ./infra
         uses: actions/download-artifact@v3
         with:
           name: tfplan
 
       - name: Terraform apply
+        working-directory: ./infra
         env:
           AWS_DEFAULT_REGION: eu-central-1
           AWS_ACCESS_KEY_ID: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_ACCESS_KEY_ID }}

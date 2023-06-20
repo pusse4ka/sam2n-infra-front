@@ -1,55 +1,8 @@
-name: terraform validate & terraform plan
-run-name: terraform validate & terraform plan
+name: Terraform plan on PR
+run-name: Terraform plan on PR
 on: [pull_request]
 jobs:
-  terraform-plan-infrastructure:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Terraform
-        uses: ./composite_actions/setup_tf
-
-      - name: Verify Terraform version
-        run: terraform --version
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
-
-      - name: Create Sandbox session
-        id: create-sandbox-session
-        uses: ./composite_actions/sandbox_session
-
-      - name: Test creds
-        run: |
-          echo ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_ACCESS_KEY_ID }}
-          echo ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SECRET_ACCESS_KEY }}
-          echo ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SESSION_TOKEN }}
-
-        #FIXME
-      - name: Terraform init
-        working-directory: ./infra
-        env:
-          AWS_DEFAULT_REGION: eu-central-1
-          AWS_ACCESS_KEY_ID: ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SESSION_TOKEN }}
-        run: terraform init
-
-#      - name: Terraform plan
-#        env:
-#          AWS_DEFAULT_REGION: eu-central-1
-#          AWS_ACCESS_KEY_ID: ${{ env.SANDBOX_AWS_ACCESS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY: ${{ env.SANDBOX_AWS_SECRET_ACCESS_KEY }}
-#          AWS_SESSION_TOKEN: ${{ env.SANDBOX_AWS_SESSION_TOKEN }}
-#        run: terraform plan -out tfplan
-#
-#      - name: Save tf plan
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: tfplan
-#          path: tfplan
+  terraform-plan:
+    uses: ./.github/workflows/terraform_plan.yml
+    with:
+      secrets: inherit
