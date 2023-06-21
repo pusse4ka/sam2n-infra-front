@@ -70,10 +70,10 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ steps.create-sandbox-session.outputs.SANDBOX_AWS_SESSION_TOKEN }}
-        run: terraform plan -out tfplan
+        run: terraform plan -out terraform.tfplan
 
       - name: Save tf plan
         uses: actions/upload-artifact@v2
         with:
-          name: tfplan
-          path: ./infra/tfplan
+          name: terraform.tfplan
+          path: ./infra/terraform.tfplan

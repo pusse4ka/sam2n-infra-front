@@ -17,17 +17,28 @@ jobs:
     needs: terraform-plan
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+
       - name: Setup Terraform
         uses: ./composite_actions/setup_tf
 
       - name: Verify Terraform version
         run: terraform --version
 
-      - name: Download tf plan
+      - name: Terraform init
         working-directory: ./infra
-        uses: actions/download-artifact@v3
+        env:
+          AWS_DEFAULT_REGION: eu-central-1
+          AWS_ACCESS_KEY_ID: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_SESSION_TOKEN }}
+        run: terraform init
+
+      - name: Download tf plan
+        uses: actions/download-artifact@v2
         with:
-          name: tfplan
+          name: terraform.tfplan
+          path: ./infra
 
       - name: Terraform apply
         working-directory: ./infra
@@ -36,4 +47,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ needs.terraform-plan.outputs.SANDBOX_AWS_SESSION_TOKEN }}
-        run: terraform apply tfplan
+        run: terraform apply terraform.tfplan
