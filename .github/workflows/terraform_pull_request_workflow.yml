@@ -1,6 +1,6 @@
 name: Terraform plan on PR
 run-name: Terraform plan on PR
-on: [pull_request]
+on: [pull_request, workflow_dispatch]
 jobs:
   terraform-plan:
     uses: ./.github/workflows/terraform_plan.yml
