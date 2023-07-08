@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'main'
+  workflow_dispatch:
+
 env:
   SANDBOX_IAM_ROLE: arn:aws:iam::242906888793:role/AWS_Sandbox
 jobs:
