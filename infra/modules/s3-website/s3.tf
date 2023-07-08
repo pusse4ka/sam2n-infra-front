@@ -1,7 +1,7 @@
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:GetObject"]
-    resources = ["${data.aws_s3_bucket.s3-website.arn}/*"]
+    resources = ["${aws_s3_bucket.s3-website.arn}/*"]
 
     principals {
       type        = "AWS"
@@ -10,23 +10,23 @@ data "aws_iam_policy_document" "s3_policy" {
   }
 }
 
-data "aws_s3_bucket" "s3-website" {
+resource "aws_s3_bucket" "s3-website" {
   bucket = var.bucket_name
   tags   = var.common_tags
 }
 
 resource "aws_s3_bucket_policy" "s3-website-policy" {
-  bucket = data.aws_s3_bucket.s3-website.id
+  bucket = aws_s3_bucket.s3-website.id
   policy = data.aws_iam_policy_document.s3_policy.json
 }
 
 resource "aws_s3_bucket_acl" "s3-website-acl" {
-  bucket = data.aws_s3_bucket.s3-website.id
+  bucket = aws_s3_bucket.s3-website.id
   acl    = "private"
 }
 
 resource "aws_s3_bucket_cors_configuration" "s3-website-cors" {
-  bucket = data.aws_s3_bucket.s3-website.bucket
+  bucket = aws_s3_bucket.s3-website.bucket
 
   cors_rule {
     allowed_headers = ["Authorization", "Content-Length"]
@@ -37,7 +37,7 @@ resource "aws_s3_bucket_cors_configuration" "s3-website-cors" {
 }
 
 resource "aws_s3_bucket_website_configuration" "s3-website-configuration" {
-  bucket = data.aws_s3_bucket.s3-website.bucket
+  bucket = aws_s3_bucket.s3-website.bucket
 
   index_document {
     suffix = "index.html"

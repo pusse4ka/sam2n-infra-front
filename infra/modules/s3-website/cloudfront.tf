@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "www_s3_distribution" {
   origin {
-    domain_name = data.aws_s3_bucket.s3-website.website_endpoint
+    domain_name = aws_s3_bucket.s3-website.website_endpoint
     origin_id   = local.s3_origin_id
 
     s3_origin_config {
@@ -51,9 +51,10 @@ resource "aws_cloudfront_distribution" "www_s3_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate_validation.cert_validation.certificate_arn
-    ssl_support_method       = "sni-only"
-    minimum_protocol_version = "TLSv1.1_2016"
+#    acm_certificate_arn      = aws_acm_certificate_validation.cert_validation.certificate_arn
+#    ssl_support_method       = "sni-only"
+#    minimum_protocol_version = "TLSv1.1_2016"
+    cloudfront_default_certificate = true
   }
 
   tags = var.common_tags
