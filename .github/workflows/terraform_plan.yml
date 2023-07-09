@@ -36,7 +36,7 @@ jobs:
       - name: Setup Terraform
         uses: ./composite_actions/setup_tf
         with:
-          terraform-version: '1.4.0'
+          terraform-version: '1.5.1'
 
       - name: Verify Terraform version
         run: terraform --version
