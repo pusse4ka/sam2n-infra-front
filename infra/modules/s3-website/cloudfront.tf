@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "www_s3_distribution" {
   origin {
-    domain_name = aws_s3_bucket.s3-website.website_endpoint
+    domain_name = aws_s3_bucket.s3-website.bucket_domain_name
     origin_id   = local.s3_origin_id
 
     s3_origin_config {
@@ -8,12 +8,12 @@ resource "aws_cloudfront_distribution" "www_s3_distribution" {
     }
   }
 
+#  aliases = [var.domain_name] #FIXME: certificate is needed, need to request access
+
   enabled             = true
   is_ipv6_enabled     = true
   comment             = "sam2n front-end application"
   default_root_object = "index.html"
-
-  aliases = ["www.${var.domain_name}"]
 
   custom_error_response {
     error_caching_min_ttl = 0
@@ -51,9 +51,6 @@ resource "aws_cloudfront_distribution" "www_s3_distribution" {
   }
 
   viewer_certificate {
-#    acm_certificate_arn      = aws_acm_certificate_validation.cert_validation.certificate_arn
-#    ssl_support_method       = "sni-only"
-#    minimum_protocol_version = "TLSv1.1_2016"
     cloudfront_default_certificate = true
   }
 

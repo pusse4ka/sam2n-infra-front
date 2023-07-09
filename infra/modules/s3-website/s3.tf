@@ -20,18 +20,13 @@ resource "aws_s3_bucket_policy" "s3-website-policy" {
   policy = data.aws_iam_policy_document.s3_policy.json
 }
 
-resource "aws_s3_bucket_acl" "s3-website-acl" {
-  bucket = aws_s3_bucket.s3-website.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_cors_configuration" "s3-website-cors" {
   bucket = aws_s3_bucket.s3-website.bucket
 
   cors_rule {
     allowed_headers = ["Authorization", "Content-Length"]
     allowed_methods = ["GET", "POST"]
-    allowed_origins = ["https://${var.domain_name}"]
+    allowed_origins = ["https://${var.domain_name}", "http://${var.domain_name}"]
     max_age_seconds = 3000
   }
 }

@@ -1,11 +1,10 @@
-resource "aws_route53_zone" "main" {
+data "aws_route53_zone" "main" {
   name = var.domain_name
-  tags = var.common_tags
 }
 
 resource "aws_route53_record" "s3-website-record" {
-  zone_id = aws_route53_zone.main.zone_id
-  name    = "www.${var.domain_name}"
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = var.domain_name
   type    = "A"
 
   alias {
